@@ -31,7 +31,6 @@ public class ProductService {
         return result.map(x -> new ProductDTO(x));
     } // result.map (direto sem stream) pq o Page já é um stream do Java.
 
-    // tirar o readOnly - não é mais apenas consultar o banco, vamos inserir dados.
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
@@ -41,6 +40,7 @@ public class ProductService {
         entity.setImgUrl(dto.getImgUrl());
 
         entity = repository.save(entity);
+
         return new ProductDTO(entity);
-    }
+    } // tirar o readOnly - não é mais apenas consultar o banco, vamos inserir dados.
 }

@@ -47,12 +47,15 @@ public class ProductService {
         return new ProductDTO(entity);
     } // getReferenceById(id) - não vai no banco, monitorado pela JPA.
 
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
     private void copyDTOToEntity(ProductDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
     }
-
-
 }

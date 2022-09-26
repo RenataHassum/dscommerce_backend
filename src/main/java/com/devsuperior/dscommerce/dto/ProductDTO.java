@@ -20,7 +20,7 @@ public class ProductDTO {
         this.imgUrl = imgUrl;
     }
 
-    public ProductDTO(Product entity) {
+    public ProductDTO(Product entity) { // ou poderia inserir os sets no lugar desse construtor
         id = entity.getId();
         name = entity.getName();
         description = entity.getDescription();

@@ -4,16 +4,16 @@ import com.devsuperior.dscommerce.entities.Payment;
 
 import java.time.Instant;
 
-public class PaymentDTO {
+public class ShoppingCartPaymentDTO {
     private Long id;
     private Instant moment;
 
-    public PaymentDTO(Long id, Instant moment) {
+    public ShoppingCartPaymentDTO(Long id, Instant moment) {
         this.id = id;
         this.moment = moment;
     }
 
-    public PaymentDTO(Payment entity) {
+    public ShoppingCartPaymentDTO(Payment entity) {
         id = entity.getId();
         moment = entity.getMoment();
     }

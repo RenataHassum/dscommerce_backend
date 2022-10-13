@@ -24,7 +24,7 @@ import java.util.Arrays;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
+//ANÁLISE DE RECURSOS | TOKEN AUTORIZAÇÃO - AULA 05-09
     @Value("${cors.origins}")
     private String corsOrigins;
 

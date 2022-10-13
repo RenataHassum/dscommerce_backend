@@ -1,7 +1,7 @@
 package com.devsuperior.dscommerce.controllers;
 
-import com.devsuperior.dscommerce.dto.OrderDTO;
-import com.devsuperior.dscommerce.services.OrderService;
+import com.devsuperior.dscommerce.dto.ShoppingCartOrderDTO;
+import com.devsuperior.dscommerce.services.ShoppingCartOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,21 +13,21 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/orders")
-public class OrderController {
+public class ShoppingCartOrderController {
 
     @Autowired
-    private OrderService service;
+    private ShoppingCartOrderService service;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
-        OrderDTO dto = service.findbyId(id);
+    public ResponseEntity<ShoppingCartOrderDTO> findById(@PathVariable Long id) {
+        ShoppingCartOrderDTO dto = service.findbyId(id);
         return ResponseEntity.ok(dto);
     }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping
-    public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderDTO dto) {
+    public ResponseEntity<ShoppingCartOrderDTO> insert(@Valid @RequestBody ShoppingCartOrderDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();

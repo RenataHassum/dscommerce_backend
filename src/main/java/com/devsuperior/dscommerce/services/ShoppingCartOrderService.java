@@ -3,7 +3,7 @@ package com.devsuperior.dscommerce.services;
 import com.devsuperior.dscommerce.dto.ShoppingCartOrderDTO;
 import com.devsuperior.dscommerce.dto.ShoppingCartOrderItemDTO;
 import com.devsuperior.dscommerce.entities.*;
-import com.devsuperior.dscommerce.repositories.OrderItemRepository;
+import com.devsuperior.dscommerce.repositories.ShoppingCartOrderItemRepository;
 import com.devsuperior.dscommerce.repositories.ShoppingCartOrderRepository;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
@@ -26,8 +26,7 @@ public class ShoppingCartOrderService {
     private UserService userService;
 
     @Autowired
-    private OrderItemRepository orderItemRepository;
-
+    private ShoppingCartOrderItemRepository shoppingCartOrderItemRepository;
 
     @Transactional(readOnly = true)
     public ShoppingCartOrderDTO findbyId(Long id) {
@@ -53,7 +52,7 @@ public class ShoppingCartOrderService {
             order.getItems().add(item);
         }
         repository.save(order);
-        orderItemRepository.saveAll(order.getItems());
+        shoppingCartOrderItemRepository.saveAll(order.getItems());
 
         return new ShoppingCartOrderDTO(order);
     }

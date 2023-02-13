@@ -18,7 +18,7 @@ public class ShoppingCartOrderController {
     @Autowired
     private ShoppingCartOrderService service;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ShoppingCartOrderDTO> findById(@PathVariable Long id) {
         ShoppingCartOrderDTO dto = service.findbyId(id);

@@ -28,10 +28,15 @@ public class ShoppingCartOrderService {
     @Autowired
     private ShoppingCartOrderItemRepository shoppingCartOrderItemRepository;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public ShoppingCartOrderDTO findbyId(Long id) {
         Order order = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
+
+        authService.validateSelfOrAdmin(order.getClient().getId());
         return new ShoppingCartOrderDTO(order);
     }
 

@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -24,7 +26,7 @@ import java.util.Arrays;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-//ANÁLISE DE RECURSOS | TOKEN AUTORIZAÇÃO - AULA 05-09
+    //ANÁLISE DE RECURSOS | TOKEN AUTORIZAÇÃO - AULA 05-09
     @Value("${cors.origins}")
     private String corsOrigins;
 
@@ -34,9 +36,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private JwtTokenStore tokenStore;
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.tokenStore(tokenStore);
+    private static final String[] SWAGGER = {
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
+
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().mvcMatchers((HttpMethod.OPTIONS), "/**");
+        web.ignoring().mvcMatchers(SWAGGER);
     }
 
     @Override
@@ -45,8 +56,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
             http.headers().frameOptions().disable();
         }
-        http.authorizeRequests().anyRequest().permitAll();
+
+        http.authorizeRequests()
+                .antMatchers(SWAGGER).permitAll()
+                .anyRequest().permitAll();
+
         http.cors().configurationSource(corsConfigurationSource());
+    }
+
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        resources.tokenStore(tokenStore);
     }
 
     @Bean
